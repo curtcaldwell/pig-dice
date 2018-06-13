@@ -1,5 +1,7 @@
 Actions [roll, hold]
-Probability var [playerScore opponentScore playerTotalTurn]
+Probability var [playerScore opponentScore playerRollCount tempScore]
+
+
 
 |Behavior|input|output|
 ----------------------

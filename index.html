@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Pig Dice</title>
+    <title>Pig Craps</title>
     <link href="css/bootstrap.css" rel="stylesheet" type="text/css">
     <link href="css/styles.css" rel="stylesheet" type="text/css">
     <script src="js/jquery-3.3.1.js"></script>
@@ -11,23 +11,38 @@
   <body>
     <div class="container">
 
-      <div class="row">
+
+      <div class="row" id="initial-state">
         <div class="jumbotron col-md-12">
-          <h1>Play Our pigdice game!</h1>
+          <h1>Play Our Pig Craps game!</h1>
+          <button class="btn btn-info" id="play-button">Play</button>
+        </div>
+      </div>
+
+      <div class="row" id="game-state">
+        <div class="col-md-4">
+          <h1>player1 score</h1>
+          <p><span id="player-one-score"></span></p>
+        </div>
+        <div class="col-md-4">
+          <h1>game state</h1>
+          <div id="action">
+            <button class="btn btn-success" id="roll-button">Roll</button>
+            <button class="btn btn-danger" id="hold-button">Hold</button>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <h1>player2 score</h1>
+          <p><span id="player-two-score"></span></p>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-4">
-          <h1>player1 score</h1>
-        </div>
-        <div class="col-md-4">
-          <h1>game state</h1>
-        </div>
-        <div class="col-md-4">
-          <h1>player2 score</h1>
+        <div class="col-md-12">
+          <h1><span id="winner"></span></h1>
         </div>
       </div>
+
     </div>
   </body>
 </html>
