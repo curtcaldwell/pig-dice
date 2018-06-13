@@ -26,6 +26,11 @@
         </div>
         <div class="col-md-4">
           <h1>game state</h1>
+          <div id="current-roll-display">
+            <h2>Player: <span id="current-player"></span></h2>
+            <h2>Your Roll: <span id="current-roll"></span></h2>
+            <h2>Roll Total: <span id="current-total"></span></h2>
+          </div>
           <div id="action">
             <button class="btn btn-success" id="roll-button">Roll</button>
             <button class="btn btn-danger" id="hold-button">Hold</button>
@@ -37,9 +42,10 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="row" id="terminal-state">
         <div class="col-md-12">
-          <h1><span id="winner"></span></h1>
+          <h1>CONGRATS: <span id="winner"></span> is the winner!</h1>
+          <button id="restart-game" class="btn">Play Again</button>
         </div>
       </div>
 
