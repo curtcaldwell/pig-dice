@@ -4,7 +4,7 @@ Probability var [playerScore opponentScore playerRollCount tempScore]
 
 
 |Behavior|input|output|
-----------------------
+|--------|-----|------|
 |inital state|play button| a change in state|
 ----------------
 |choice on roll| press roll btn| random num 1-6 is chosen|
