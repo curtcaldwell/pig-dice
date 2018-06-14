@@ -1,110 +1,36 @@
 //Back End Logic
-
-var playerScore = 0;
-var opponentScore = 0;
-var playerTurn = 1;
-var tempScore = 0;
-var playerRollCount = 0;
-var newGameState = new GameState(playerScore, opponentScore, playerTurn, tempScore,  playerRollCount);
-
-function GameState(playerScore, opponentScore, playerTurn, tempScore, playerRollCount)
+var initialPlayerScore = 0;
+var initialOpponentScore = 0;
+var initialPlayerTurn = 1;
+var initialTempScore = 0;
+var initialPlayerRollCount = 0;
+var initialGameType = 0;
+//
+//
+function Game(playerScore, opponentScore, playerTurn, tempScore, playerRollCount, gameType)
 {
   this.playerScore = playerScore;
   this.opponentScore = opponentScore;
   this.playerTurn = playerTurn;
   this.tempScore = tempScore;
   this.playerRollCount = playerRollCount;
+  this.gameType = gameType;
 };
-
-
-
-
-
-GameState.prototype.roll = function(playerTurn, tempScore)
+//
+//
+var newGame = new Game(initialPlayerScore, initialOpponentScore, initialPlayerTurn, initialTempScore, initialPlayerRollCount, initialGameType);
+//
+//
+Game.prototype.terminate = function(score)
 {
-  if(newGameState.playerTurn === 1)
-  {
-    var playerRoll = dSix();
-    if(playerRoll === 1 || playerRoll === 7)
-    {
-      newGameState.tempScore = 0;
-      newGameState.playerTurn = 2;
-      $("#current-roll").text(playerRoll);
-      $("#current-player").text("Player 2");
-      $("#current-total").text(newGameState.tempScore);
-    }
-    else
-    {
-      newGameState.tempScore += playerRoll;
-      $("#current-roll").text(playerRoll);
-      $("#current-player").text("Player 1");
-      $("#current-total").text(newGameState.tempScore);
-    }
-  }
-  else
-  {
-    var opponentRoll = dSix();
-    if(opponentRoll === 1 || opponentRoll === 7)
-    {
-      newGameState.tempScore = 0;
-      newGameState.playerTurn = 1;
-      $("#current-roll").text(opponentRoll);
-      $("#current-player").text("Player 1");
-      $("#current-total").text(newGameState.tempScore);
-    }
-    else
-    {
-      newGameState.tempScore += opponentRoll;
-      $("#current-roll").text(opponentRoll);
-      $("#current-player").text("Player 2");
-      $("#current-total").text(newGameState.tempScore);
-    }
-  }
-}
-
-
-
-
-
-
-
-GameState.prototype.hold = function(playerTurn, tempScore, opponentScore, playerScore)
-{
-  if (newGameState.playerTurn === 1)
-  {
-    newGameState.playerScore += newGameState.tempScore;
-    newGameState.playerTurn = 2;
-    $("#current-player").text("Player 2");
-    $("#player-one-score").text(newGameState.playerScore)
-    newGameState.terminate(newGameState.playerScore);
-  }
-  else
-  {
-    newGameState.opponentScore += newGameState.tempScore;
-    newGameState.playerTurn = 1;
-    $("#current-player").text("Player 1");
-    $("#player-two-score").text(newGameState.opponentScore);
-    newGameState.terminate(newGameState.opponentScore);
-  }
-  $("#current-total").text(0)
-  $("#current-roll").text(0)
-  newGameState.tempScore = 0;
-}
-
-
-
-GameState.prototype.terminate = function(score)
-{
-  if(score <= 15){
-    //
-  }
-  else
+  if(score >= 15)
   {
     $("#player-one-score").text(0)
     $("#player-two-score").text(0)
     $("#game-state").hide();
     $("#terminal-state").show();
-    if(newGameState.playerTurn === 1)
+
+    if(newGame.playerTurn === 1)
     {
       $("span#winner").text("Player 2");
     }
@@ -114,15 +40,99 @@ GameState.prototype.terminate = function(score)
     }
   }
 }
-
-
-
-
-
+//
+//
 function dSix()
 {
   return (Math.floor(Math.random() * 6 ) + 1)
 }
+//
+//
+function playerOneRoll()
+{
+  var playerRoll = dSix();
+  if(playerRoll === 1)
+  {
+    newGame.tempScore = 0;
+    newGame.playerTurn = 2;
+    $("#current-roll").text(playerRoll);
+    $("#current-player").text("Player 2");
+    $("#current-total").text(newGame.tempScore);
+  }
+  else
+  {
+    newGame.tempScore += playerRoll;
+    $("#current-roll").text(playerRoll);
+    $("#current-total").text(newGame.tempScore);
+  }
+}
+//
+//
+function playerTwoRoll()
+{
+  var opponentRoll = dSix();
+  if(opponentRoll === 1)
+  {
+    newGame.tempScore = 0;
+    newGame.playerTurn = 1;
+    $("#current-roll").text(opponentRoll);
+    $("#current-player").text("Player 1");
+    $("#current-total").text(newGame.tempScore);
+  }
+  else
+  {
+    newGame.tempScore += opponentRoll;
+    $("#current-roll").text(opponentRoll);
+    $("#current-total").text(newGame.tempScore);
+  }
+}
+//
+//
+roll = function()
+{
+  if(newGame.playerTurn === 1)
+  {
+    playerOneRoll();
+  }
+  else
+  {
+    playerTwoRoll();
+  }
+}
+//
+//
+hold = function()
+{
+  if (newGame.playerTurn === 1)
+  {
+    newGame.playerScore += newGame.tempScore;
+    newGame.playerTurn = 2;
+    $("#current-player").text("Player 2");
+    $("#player-one-score").text(newGame.playerScore)
+    newGame.terminate(newGame.playerScore);
+  }
+  else
+  {
+    newGame.opponentScore += newGame.tempScore;
+    newGame.playerTurn = 1;
+    $("#current-player").text("Player 1");
+    $("#player-two-score").text(newGame.opponentScore);
+    newGame.terminate(newGame.opponentScore);
+  }
+  $("#current-total").text(0)
+  $("#current-roll").text(0)
+  newGame.tempScore = 0;
+}
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -131,7 +141,8 @@ function dSix()
 
 //Front End
 $(document).ready(function(){
-
+//
+//
   $("button#play-button").click(function(event)
   {
     event.preventDefault();
@@ -140,33 +151,33 @@ $(document).ready(function(){
     $("#game-state").show();
     $("#current-player").text("Player 1");
   });
-
+//
+//
   $("button#roll-button").click(function(event)
   {
     event.preventDefault();
-    newGameState.roll(newGameState.playerTurn, 0);
+    roll();
   });
-
+//
+//
   $("button#hold-button").click(function(event)
   {
     event.preventDefault();
-    newGameState.hold(newGameState.playerTurn, newGameState.tempScore, newGameState.opponentScore, newGameState.playerScore);
+    hold();
   });
-
+//
+//
   $("button#restart-game").click(function(event)
   {
-    playerScore = 0;
-    opponentScore = 0;
-    playerTurn = 1;
-    tempScore = 0;
-    playerRollCount = 0;
+    newGame.playerScore = 0;
+    newGame.opponentScore = 0;
+    newGame.playerTurn = 1;
+    newGame.tempScore = 0;
+    newGame.playerRollCount = 0;
 
     $("#initial-state").show();
     $("#terminal-state").hide();
-
   });
-
-
-
-
+//
+//
 });
