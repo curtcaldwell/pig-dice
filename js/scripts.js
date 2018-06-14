@@ -25,7 +25,7 @@ var newGame = new Game(initialPlayerScore, initialOpponentScore, initialPlayerTu
 //
 Game.prototype.terminate = function(score)
 {
-  if(score >= 30)
+  if(score >= 100)
   {
     $("#player-one-score").text(0);
     $("#player-two-score").text(0);
@@ -68,6 +68,33 @@ function playerOneRoll()
       playerTwoRoll()
       playerTwoRoll()
       playerTwoHold()
+    }
+    else if (newGame.gameType === 3)
+    {
+      if ((newGame.playerScore - newGame.opponentScore) >= 25)//if behind
+      {
+        while(newGame.playerTurn != 1 && newGame.tempScore < 20)
+        {
+        playerTwoRoll()
+        }
+        playerTwoHold()
+      }
+      else if ((newGame.opponentScore - newGame.playerScore) >= 25)//if ahead
+      {
+        while(newGame.playerTurn != 1 && newGame.tempScore < 10)
+        {
+        playerTwoRoll()
+        }
+        playerTwoHold()
+      }
+      else
+      {
+        while (newGame.playerTurn != 1 && newGame.tempScore < 15)//normal play
+        {
+          playerTwoRoll()
+        }
+        playerTwoHold()
+      }
     }
   }
   else
@@ -160,17 +187,47 @@ function hold()
     {
       playerTwoHold();
     }
-
     newGame.tempScore = 0;
   }
   else if (newGame.gameType === 2)
   {
     playerOneHold();
-    if (newGame.playerScore < 30)
+    if (newGame.playerScore < 100)
     {
       playerTwoRoll()
       playerTwoRoll()
       playerTwoHold()
+    }
+  }
+  else if (newGame.gameType === 3)
+  {
+    playerOneHold();
+    if (newGame.playerScore < 100)
+    {
+      if ((newGame.playerScore - newGame.opponentScore) >= 30)//if behind
+      {
+        while(newGame.playerTurn != 1 && newGame.tempScore < 25)
+        {
+        playerTwoRoll()
+        }
+        playerTwoHold()
+      }
+      else if ((newGame.opponentScore - newGame.playerScore) >= 25)//if ahead
+      {
+        while(newGame.playerTurn != 1 && newGame.tempScore < 10)
+        {
+        playerTwoRoll()
+        }
+        playerTwoHold()
+      }
+      else
+      {
+        while (newGame.playerTurn != 1 && newGame.tempScore < 18)//normal play
+        {
+          playerTwoRoll()
+        }
+        playerTwoHold()
+      }
     }
   }
 }
