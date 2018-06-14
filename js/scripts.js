@@ -206,7 +206,7 @@ function hold()
     {
       if ((newGame.playerScore - newGame.opponentScore) >= 30)//if behind
       {
-        while(newGame.playerTurn != 1 && newGame.tempScore < 25)
+        while(newGame.playerTurn != 1 && newGame.tempScore < 20)
         {
         playerTwoRoll()
         }
@@ -222,7 +222,7 @@ function hold()
       }
       else
       {
-        while (newGame.playerTurn != 1 && newGame.tempScore < 18)//normal play
+        while (newGame.playerTurn != 1 && newGame.tempScore < 15)//normal play
         {
           playerTwoRoll()
         }
