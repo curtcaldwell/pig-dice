@@ -1,4 +1,6 @@
+//
 //Back End Logic
+//
 var initialPlayerScore = 0;
 var initialOpponentScore = 0;
 var initialPlayerTurn = 1;
@@ -56,6 +58,8 @@ function playerOneRoll()
     alert("Player One rolled a 1.")
     newGame.tempScore = 0;
     newGame.playerTurn = 2;
+    $("#current-total").text(0);
+    $("#current-roll").text(0);
     $("#current-roll").text(playerRoll);
     $("#current-player").text("Player 2");
     $("#current-total").text(newGame.tempScore);
@@ -86,6 +90,8 @@ function playerTwoRoll()
       alert("Player Two rolled a 1.")
       newGame.tempScore = 0;
       newGame.playerTurn = 1;
+      $("#current-total").text(0);
+      $("#current-roll").text(0);
       $("#current-roll").text(opponentRoll);
       $("#current-player").text("Player 1");
       $("#current-total").text(newGame.tempScore);
@@ -118,6 +124,8 @@ function playerOneHold()
   newGame.playerScore += newGame.tempScore;
   newGame.playerTurn = 2;
   newGame.tempScore = 0;
+  $("#current-total").text(0);
+  $("#current-roll").text(0);
   $("#current-player").text("Player 2");
   $("#player-one-score").text(newGame.playerScore);
   newGame.terminate(newGame.playerScore);
@@ -131,6 +139,8 @@ function playerTwoHold()
     newGame.opponentScore += newGame.tempScore;
     newGame.playerTurn = 1;
     newGame.tempScore = 0;
+    $("#current-total").text(0);
+    $("#current-roll").text(0);
     $("#current-player").text("Player 1");
     $("#player-two-score").text(newGame.opponentScore);
     newGame.terminate(newGame.opponentScore);
@@ -150,44 +160,23 @@ function hold()
     {
       playerTwoHold();
     }
-    $("#current-total").text(0);
-    $("#current-roll").text(0);
+
     newGame.tempScore = 0;
   }
   else if (newGame.gameType === 2)
   {
     playerOneHold();
-    $("#current-total").text(0);
-    $("#current-roll").text(0);
-    newGame.tempScore = 0;
     if (newGame.playerScore < 30)
     {
       playerTwoRoll()
       playerTwoRoll()
       playerTwoHold()
-      $("#current-total").text(0);
-      $("#current-roll").text(0);
-      newGame.tempScore = 0;
     }
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//
 //Front End
+//
 $(document).ready(function(){
 //
 //
