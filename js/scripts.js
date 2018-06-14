@@ -4,7 +4,7 @@ var initialOpponentScore = 0;
 var initialPlayerTurn = 1;
 var initialTempScore = 0;
 var initialPlayerRollCount = 0;
-var initialGameType = 0;
+var initialGameType = 1;
 //
 //
 function Game(playerScore, opponentScore, playerTurn, tempScore, playerRollCount, gameType)
@@ -23,10 +23,10 @@ var newGame = new Game(initialPlayerScore, initialOpponentScore, initialPlayerTu
 //
 Game.prototype.terminate = function(score)
 {
-  if(score >= 15)
+  if(score >= 30)
   {
-    $("#player-one-score").text(0)
-    $("#player-two-score").text(0)
+    $("#player-one-score").text(0);
+    $("#player-two-score").text(0);
     $("#game-state").hide();
     $("#terminal-state").show();
 
@@ -44,7 +44,7 @@ Game.prototype.terminate = function(score)
 //
 function dSix()
 {
-  return (Math.floor(Math.random() * 6 ) + 1)
+  return (Math.floor(Math.random() * 6 ) + 1);
 }
 //
 //
@@ -53,11 +53,18 @@ function playerOneRoll()
   var playerRoll = dSix();
   if(playerRoll === 1)
   {
+    alert("Player One rolled a 1.")
     newGame.tempScore = 0;
     newGame.playerTurn = 2;
     $("#current-roll").text(playerRoll);
     $("#current-player").text("Player 2");
     $("#current-total").text(newGame.tempScore);
+    if (newGame.gameType === 2)
+    {
+      playerTwoRoll()
+      playerTwoRoll()
+      playerTwoHold()
+    }
   }
   else
   {
@@ -70,25 +77,30 @@ function playerOneRoll()
 //
 function playerTwoRoll()
 {
-  var opponentRoll = dSix();
-  if(opponentRoll === 1)
+  if (newGame.playerTurn != 1)
   {
-    newGame.tempScore = 0;
-    newGame.playerTurn = 1;
-    $("#current-roll").text(opponentRoll);
-    $("#current-player").text("Player 1");
-    $("#current-total").text(newGame.tempScore);
-  }
-  else
-  {
-    newGame.tempScore += opponentRoll;
-    $("#current-roll").text(opponentRoll);
-    $("#current-total").text(newGame.tempScore);
+    var opponentRoll = dSix();
+    console.log(opponentRoll);
+    if(opponentRoll === 1)
+    {
+      alert("Player Two rolled a 1.")
+      newGame.tempScore = 0;
+      newGame.playerTurn = 1;
+      $("#current-roll").text(opponentRoll);
+      $("#current-player").text("Player 1");
+      $("#current-total").text(newGame.tempScore);
+    }
+    else
+    {
+      newGame.tempScore += opponentRoll;
+      $("#current-roll").text(opponentRoll);
+      $("#current-total").text(newGame.tempScore);
+    }
   }
 }
 //
 //
-roll = function()
+function roll()
 {
   if(newGame.playerTurn === 1)
   {
@@ -101,27 +113,63 @@ roll = function()
 }
 //
 //
-hold = function()
+function playerOneHold()
 {
-  if (newGame.playerTurn === 1)
-  {
-    newGame.playerScore += newGame.tempScore;
-    newGame.playerTurn = 2;
-    $("#current-player").text("Player 2");
-    $("#player-one-score").text(newGame.playerScore)
-    newGame.terminate(newGame.playerScore);
-  }
-  else
+  newGame.playerScore += newGame.tempScore;
+  newGame.playerTurn = 2;
+  newGame.tempScore = 0;
+  $("#current-player").text("Player 2");
+  $("#player-one-score").text(newGame.playerScore);
+  newGame.terminate(newGame.playerScore);
+}
+//
+//
+function playerTwoHold()
+{
+  if (newGame.playerTurn != 1)
   {
     newGame.opponentScore += newGame.tempScore;
     newGame.playerTurn = 1;
+    newGame.tempScore = 0;
     $("#current-player").text("Player 1");
     $("#player-two-score").text(newGame.opponentScore);
     newGame.terminate(newGame.opponentScore);
   }
-  $("#current-total").text(0)
-  $("#current-roll").text(0)
-  newGame.tempScore = 0;
+}
+//
+//
+function hold()
+{
+  if(newGame.gameType === 1)
+  {
+    if (newGame.playerTurn === 1)
+    {
+      playerOneHold();
+    }
+    else
+    {
+      playerTwoHold();
+    }
+    $("#current-total").text(0);
+    $("#current-roll").text(0);
+    newGame.tempScore = 0;
+  }
+  else if (newGame.gameType === 2)
+  {
+    playerOneHold();
+    $("#current-total").text(0);
+    $("#current-roll").text(0);
+    newGame.tempScore = 0;
+    if (newGame.playerScore < 30)
+    {
+      playerTwoRoll()
+      playerTwoRoll()
+      playerTwoHold()
+      $("#current-total").text(0);
+      $("#current-roll").text(0);
+      newGame.tempScore = 0;
+    }
+  }
 }
 
 
@@ -150,6 +198,29 @@ $(document).ready(function(){
     $("#initial-state").hide();
     $("#game-state").show();
     $("#current-player").text("Player 1");
+    newGame.gameType = 1;
+  });
+//
+//
+  $("button#baby-play-button").click(function(event)
+  {
+    event.preventDefault();
+
+    $("#initial-state").hide();
+    $("#game-state").show();
+    $("#current-player").text("Player 1");
+    newGame.gameType = 2;
+  });
+//
+//
+  $("button#nightmare-play-button").click(function(event)
+  {
+    event.preventDefault();
+
+    $("#initial-state").hide();
+    $("#game-state").show();
+    $("#current-player").text("Player 1");
+    newGame.gameType = 3;
   });
 //
 //
